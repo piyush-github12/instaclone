@@ -55,6 +55,7 @@ router.get("/valininput/:usernamevalue", function (req, res, next) {
     });
 });
 
+
 router.post("/updateprofile", isLoggedIn, function (req, res, next) {
   userModel.findOneAndUpdate(
     { username: req.session.passport.user },
@@ -119,8 +120,17 @@ router.post("/resetpassword/:userid", async  function (req, res, next) {
 router.get("/search", isLoggedIn, function (req, res, next) {
   res.render("search")
 });
-router.get("/searchquery/value", isLoggedIn, function (req, res, next) {
-  
+router.post("/searchquery", isLoggedIn, async function (req, res, next) {
+  if( req.body.search.length > 0){
+    const serachedusers = await userModel.find({
+      username : {$regex : req.body.search}
+    })
+    res.json({
+      users : serachedusers
+    })
+  }
+
+    
 });
 
 router.post("/login",

@@ -22,7 +22,7 @@ models
 
 
 
-user 
+user-Features
   create account ✅
   login/logout   ✅
   password forgot ✅
@@ -30,13 +30,14 @@ user
   edit profile picture
   create post  
   delete post
-  search users & profile dek sakta hai 
+  search users ✅ & profile dek sakta hai 
   follow/unfollow users
   comment on anyones post
   like/unlike posts
   save posts
   create stories for 24 hr
   message bhi kar sakte hai 
+  
 
 
 
