@@ -1,0 +1,26 @@
+<% include ./partials/header.ejs %>
+<div id="right">
+
+    <div id="search">
+     <input id="searchquery" type="text" name="searchquery"  placeholder="Search">
+    <br>
+
+    <div id="searchresult">
+        <a  href=""> 
+            <img style="border-radius: 50%; width: 3vw; height: 3vw; border: 2px solid black;" src="def.png" alt="">
+            <h5>halalalal</h5>
+        </a>
+    </div>
+    </div>
+
+    <script>
+        var searchquery = document.querySelector("#searchquery")
+
+        searchquery.addEventListener('input',function(){
+            axios.get(`/searchquery/${searchquery.value}`)
+        })
+
+    </script>
+</div>
+
+<% include ./partials/footer.ejs %>

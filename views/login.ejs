@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Mooli&family=Poppins&display=swap');
+      body{
+        font-family: mooli;
+      }
+      #indexpage{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        padding-left: 5vw;
+      }
+      #leftimage{
+        width: 40vw;
+        height: 40vw;
+      }
+      #instaword{
+        width: 80%;
+        margin-top: 3vw;
+        margin-bottom: 5vw;
+      }
+      .instaimage img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #resisterform{
+        width: 30vmax;
+        height: 80vh;
+        border: 2px solid black;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+      }
+      form{
+        margin-top: 3vw;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.8vw;
+        margin-bottom: 2vw;
+      }
+      form input{
+        width: 100%;
+        padding: 10px 20px;
+        border-radius: 5px;
+        outline: none;
+        border: 2px solid rgb(0, 0, 0);
+        background-color: rgba(0, 191, 255, 0.074);
+      }
+      #usernamebox ,#emailbox{
+        width: 100%;
+        
+      }
+      form h5{
+        opacity: 0;
+        position: absolute;
+        font-weight: 900;
+        color: red;
+        font-size: 12px;
+        margin-top: 2px;
+        
+      }
+      
+      @media (max-width : 800px) {
+      #indexpage{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-left: 5vw;
+        
+        /* justify-content: space-evenly; */
+      }
+      #leftimage{
+        width: 50vw;
+        height: 50vw;
+        /* background-color: black; */
+      }
+      #resisterform{
+        width: 80vw;
+        height: calc(100vh - 60vw);
+        border: 2px solid black;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+      }
+      form{
+        margin-top: 3vw;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3vh;
+        margin-bottom: 5vh;
+      }
+      }
+      
+    </style>
+  </head>
+  
+  <body>
+    <div id="indexpage">
+      <div class="instaimage" id="leftimage">
+        <img src="../images/Instagram-Logo-PNG-Images.png" alt="">
+      </div>
+
+      <div id="resisterform">
+        <div class="instaimage" id="instaword" >
+          <img src="../images/insta_word_name-removebg-preview.png" alt="">
+        </div>
+        <h4>Login to My Account</h4>
+
+        <form id="regform" action="/login" method="post">
+          <input id="username" type="text" placeholder="Username" name="username">
+          <input id="password" type="password" placeholder="Password" name="password">
+          <div id="sub" style="width: 100%; position: relative;">
+            <input id="submit" style="width: 40%; position: absolute; right: 0%;" type="submit" class="btn btn-primary" value="Log In">
+          </div>
+        </form>
+
+        <h5>or</h5>
+        <a href="/forgotpass-step1" class="btn btn-warning ms-4" >  Forgot Password</a>
+        <h5>or</h5>
+        <h6>Create Account <a href="/">Singn up</a></h6>
+
+      </div>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+     <script>
+       var submit = document.querySelector('#submit')
+      var regform = document.querySelector('#regform')
+
+      
+      submit.addEventListener('mouseenter',function(){
+
+        var username = document.querySelector('#username').value
+        var password = document.querySelector('#password').value
+
+        submitposition = submit.style.right
+
+        if(username == '' || password ==''){
+          
+          if(submitposition == '0%'){
+            gsap.to(submit ,{
+              right: '60%',
+              duration: 0.01,
+            })
+          }
+          else{
+          gsap.to(submit ,{
+              right: '0%',
+              duration: 0.01,
+            })
+          }
+        }
+      })
+
+     </script>
+  </body>
+</html>

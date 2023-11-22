@@ -1,0 +1,198 @@
+<% include ./partials/header.ejs %>
+  <style>
+
+    #upper{
+      width: 100%;
+      height: 30vh;
+      display: flex;
+
+      /* background-color: aqua; */
+    }
+    #up-first{
+      position: relative;
+      width: 20vw;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* background-color: rebeccapurple; */
+    }
+    #profileimage{
+      width: 15vw;
+      height: 15vw;
+      border-radius: 50%;
+      /* background-color: palegreen; */
+      border: 3px solid black;
+      overflow: hidden;
+
+    }
+    #profileimage img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #uploadprofile{
+      opacity: 0;
+      position: absolute;
+      right: 2vw;
+      top: 5vw;
+      width: 2.5vw;
+      height: 2.5vw;
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #uploadprofile i{
+      font-size: 1.5vw;
+    }
+    #mainprofile{
+      border-radius: 50%;
+    }
+    #mainprofile:hover #uploadprofile{
+      opacity: 1;
+      color: black;
+    }
+    #up-second{
+      padding: 3vw 5vw ;
+      line-height:3vw;
+      width: calc(100% - 20vw);
+      height: 100%;
+    }
+    #edit{
+      padding: 5px 1vw;
+      background-color: rgb(161, 161, 162);
+      border-radius: 5px;
+      border: 2px solid rgba(0, 0, 0, 0.667);
+      text-decoration: none;
+      color: black;
+
+    }
+    #up-second-second{
+      width: 100%;
+      margin-top: 1vw;
+      display: flex;
+      align-items: center;
+      gap: 5vw;
+
+    }
+    #lower{
+      margin-top: 2vh;
+      width: 100%;
+      position: relative;
+    }
+    #lowerfirst{
+      border-top: 2px solid black;
+      border-bottom: 2px solid black;
+      width: 100%;
+      height: 5vh;
+      /* background-color: palegreen; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10vw;
+      cursor: pointer;
+    }
+    #profile-posts{
+      position: absolute;
+      width: 100%;
+      height: 50vh;
+      background-color: palegreen;
+    }
+    #profile-saved-posts{
+      position: absolute;
+      width: 100%;
+      height: 50vh;
+      background-color: palevioletred;
+      opacity: 0;      
+    }
+    
+  </style>
+
+  <div id="right">
+    <div id="upper">
+      <div id="up-first">
+        <div id="mainprofile">
+          <div id="profileimage">
+            <img src="../images/poiflepicture/<%= founduser.image%>" alt="">
+          </div>
+          <a href="/uploadprofile"><div id="uploadprofile"><i class="ri-pencil-fill"></i></i></div></a>
+        </div>
+      </div>
+      <div id="up-second">
+        <h2 style="font-weight: 900;" ><%= founduser.username%></h2>
+        <a href="/edit" id="edit" >Edit Profile</a>
+        <div id="up-second-second">
+          <h4><%= founduser.posts.length%> Posts</h4>
+          <h4><%= founduser.followers.length%> follower</h4>
+          <h4><%= founduser.following.length%> following</h4>
+          
+        </div>
+        
+        <h4><%= founduser.profession%></h4>
+
+      </div>
+    </div>
+    <div id="lower">
+      <div id="lowerfirst">
+        <h5 id="lf-post" ><i class="ri-grid-fill"></i> Posts</h5>
+        <h5 id="lf-saved" style="color: rgb(113, 113, 113);" ><i class="ri-bookmark-fill"></i> Saved</h5>
+      </div>
+
+      <div id="profile-posts">
+
+      </div>
+      <div id="profile-saved-posts">
+
+      </div>
+
+    </div>
+
+  </div>
+    
+<script>
+  var profilesavedposts = document.querySelector('#profile-saved-posts')
+  var profilepost = document.querySelector('#profile-post')
+  var lfsaved =  document.querySelector('#lf-saved')
+  var lfpost =  document.querySelector('#lf-post')
+  var lowerfirst =  document.querySelector('#lowerfirst')
+
+  lfsaved.addEventListener('click',function(){
+    gsap.to(profilesavedposts,{
+      opacity:1
+    }) 
+    gsap.to('#lowerfirst h5:nth-child(2)',{
+      color: 'black'
+    })
+    gsap.to('#lowerfirst h5:nth-child(1)',{
+      color: 'rgb(113, 113, 113)'
+    })
+    gsap.to(profilepost,{
+      opacity:0
+    })    
+   
+  })
+  lfpost.addEventListener('click',function(){
+    gsap.to(profilesavedposts,{
+      opacity:0
+    })    
+    gsap.to(profilepost,{
+      opacity:1
+    })  
+    gsap.to('#lowerfirst h5:nth-child(2)',{
+      color: 'rgb(113, 113, 113)'
+    })
+    gsap.to('#lowerfirst h5:nth-child(1)',{
+      color: 'black'
+    })  
+   
+  })
+  
+</script>
+
+<% include ./partials/footer.ejs %>
+
+
+ 
