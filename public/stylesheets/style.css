@@ -78,12 +78,12 @@ html, body{
 }
 
 #search{
-  padding: 3vw;
+  padding: 0vw 10vw;
   z-index: 99;
-  background-color: rgb(255, 255, 255);
+  /* background-color: rgb(174, 29, 29); */
 }
 #search input{
-  margin-top: 4vw;
+  margin-top: 2vw;
   margin-bottom: 2vw;
   padding: 1vw 1.5vw;
   width: 100%;
@@ -95,16 +95,21 @@ html, body{
 #searchresult{
   margin-top: 3vh;
   width: 100%;
-  height: 5vh;
-  /* border: 2px solid black; */
+  height: 10vh;
 }
 
 #searchresult a {
+  border-radius: 10px;
+  padding: 1vw;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 4vw;
   text-decoration: none;
   color: black;
+  
+}
+#searchresult a:hover{
+  background-color: rgba(154, 150, 150, 0.493)
   
 }
 #searchresult a h5{

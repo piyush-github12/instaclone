@@ -30,8 +30,8 @@ user-Features
   edit profile picture
   create post  
   delete post
-  search users ✅ & profile dek sakta hai 
-  follow/unfollow users
+  search users ✅ & profile dek sakta hai ✅
+  follow/unfollow users  ✅
   comment on anyones post
   like/unlike posts
   save posts

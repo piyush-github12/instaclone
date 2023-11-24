@@ -129,9 +129,45 @@ router.post("/searchquery", isLoggedIn, async function (req, res, next) {
       users : serachedusers
     })
   }
-
-    
+  else{
+    res.json({
+      users:""
+    })
+  }
 });
+router.get("/usersprofile/:user", isLoggedIn,async function (req, res, next) {
+  var user = await userModel.findOne({username: req.session.passport.user,});
+
+  var otheruser = await userModel.findOne({username : req.params.user})
+  if(user.username === otheruser.username){
+    res.redirect('/profile')
+  }
+  res.render("usersprofile" , {otheruser , user });
+  
+});
+router.get("/follow/:userid", isLoggedIn, async function (req, res, next) {
+  var ujf_kar_raha = await userModel.findOne({username: req.session.passport.user,});
+  var ujf_ho_raha = await userModel.findOne({_id : req.params.userid})
+ 
+ if (ujf_kar_raha.following.indexOf(req.params.userid) === -1){
+   ujf_ho_raha.followers.push(ujf_kar_raha._id);
+   ujf_ho_raha.save()
+   ujf_kar_raha.following.push(ujf_ho_raha._id);
+   ujf_kar_raha.save()
+ }
+ else{
+  ujf_ho_raha.followers.splice(ujf_kar_raha._id , 1);
+  ujf_ho_raha.save();
+  ujf_kar_raha.following.splice(ujf_ho_raha._id , 1);
+  ujf_kar_raha.save();
+ }
+  
+  
+  res.redirect("back");
+});
+
+
+
 
 router.post("/login",
   passport.authenticate("local", {

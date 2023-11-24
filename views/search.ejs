@@ -2,10 +2,11 @@
 <div id="right">
 
     <div id="search">
-     <input id="searchquery" oninput="searchusers()" type="text" name="searchquery"  placeholder="Search">
+     <input id="searchquery" oninput="searchusers()" type="text" name="searchquery"  placeholder="Search User">
     <br>
 
     <div id="searchresult">
+        
         
     </div>
     </div>
@@ -19,9 +20,14 @@
             var clutter = ``
             results.data.users.forEach(user => {
                 clutter += `<div id="searchresult">
-                    <a  href=""> 
-                        <img style="border-radius: 50%; width: 3vw; height: 3vw; border: 2px solid black;" src="${user.image}" alt="">
-                        <h5>${user.username} </h5>
+                    <a  href="/usersprofile/${user.username}"> 
+                        <img style="border-radius: 50%; width: 5vw; height: 5vw; border: 2px solid black;" src="${user.image}" alt="">
+                        <div id="searchresultright">
+                            <h4>${user.username} </h4>
+                            <h6> • ${user.followers.length}  Followers</h6>
+
+                        </div>
+                       
                     </a></div>`
             });
 

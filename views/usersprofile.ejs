@@ -1,4 +1,5 @@
 <% include ./partials/header.ejs %>
+
   <style>
 
     #upper{
@@ -116,21 +117,25 @@
       <div id="up-first">
         <div id="mainprofile">
           <div id="profileimage">
-            <img src="../images/poiflepicture/<%= founduser.image%>" alt="">
+            <img src="../images/poiflepicture/<%= otheruser.image%>" alt="">
           </div>
-          <a href="/uploadprofile"><div id="uploadprofile"><i class="ri-pencil-fill"></i></i></div></a>
         </div>
       </div>
       <div id="up-second">
-        <h2 style="font-weight: 900;" ><%= founduser.username%></h2>
-        <a href="/edit" id="edit" >Edit Profile</a>
-        <div id="up-second-second" class="mb-3">
-          <h4><%= founduser.posts.length%> Posts</h4>
-          <h4><%= founduser.followers.length%> follower</h4>
-          <h4><%= founduser.following.length%> following</h4>
+        
+        <h2 style="font-weight: 900;" ><%= otheruser.username %></h2>
+        
+        <a href="/follow/<%= otheruser._id %>" class="btn <%= user.following.indexOf(otheruser.id) === -1 ? 'btn-primary' : 'btn-warning' %>" > <%= user.following.indexOf(otheruser.id) === -1 ? 'Follow' : 'Unfollow' %></a> 
+        <a href="/message"  class="btn btn-primary ms-3" > Message</a>
+
+        <div id="up-second-second" class="mb-2">
+          <h4><%= otheruser.posts.length%> Posts</h4>
+          <h4><%= otheruser.followers.length%> follower</h4>
+          <h4><%= otheruser.following.length%> following</h4>
+          
         </div>
         
-        <h5 style="color: gray;"><%= founduser.profession%></h5>
+        <h5 style="color: gray;"><%= otheruser.profession%></h5>
 
       </div>
     </div>
@@ -190,8 +195,4 @@
   })
   
 </script>
-
 <% include ./partials/footer.ejs %>
-
-
- 
