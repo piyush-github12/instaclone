@@ -4,6 +4,9 @@ const userModel = require("./users");
 const passport = require("passport");
 const mailer = require("../nodemailer");
 const crypto = require("crypto");
+const multer = require("multer")
+const multer = require("multer")
+
 
 
 const localStrategy = require("passport-local");
@@ -116,7 +119,7 @@ router.post("/resetpassword/:userid", async  function (req, res, next) {
 });
 /* password forgot */
 
-
+/* search user */
 router.get("/search", isLoggedIn, function (req, res, next) {
   res.render("search")
 });
@@ -137,14 +140,17 @@ router.post("/searchquery", isLoggedIn, async function (req, res, next) {
 });
 router.get("/usersprofile/:user", isLoggedIn,async function (req, res, next) {
   var user = await userModel.findOne({username: req.session.passport.user,});
-
   var otheruser = await userModel.findOne({username : req.params.user})
   if(user.username === otheruser.username){
     res.redirect('/profile')
   }
-  res.render("usersprofile" , {otheruser , user });
+  else{
+    res.render("usersprofile" , {otheruser , user });
+  }
   
 });
+
+/* Follow / unfollow other users  */
 router.get("/follow/:userid", isLoggedIn, async function (req, res, next) {
   var ujf_kar_raha = await userModel.findOne({username: req.session.passport.user,});
   var ujf_ho_raha = await userModel.findOne({_id : req.params.userid})
@@ -166,6 +172,10 @@ router.get("/follow/:userid", isLoggedIn, async function (req, res, next) {
   res.redirect("back");
 });
 
+
+router.get('/explore', function(req , res , next){
+  res.render('explore')
+})
 
 
 
