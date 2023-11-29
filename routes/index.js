@@ -1,16 +1,79 @@
 var express = require("express");
 var router = express.Router();
 const userModel = require("./users");
+const postModel = require("./posts");
 const passport = require("passport");
 const mailer = require("../nodemailer");
 const crypto = require("crypto");
 const multer = require("multer")
-const multer = require("multer")
+const path = require("path");
+const mongoose = require('mongoose')
+const { GridFsStorage } = require("multer-gridfs-storage");
+const {Readable} = require('stream')
 
+mongoose
+  .connect("mongodb://127.0.0.1:27017/instaclone")
+  .then(() => {
+    console.log("connected to database");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
+const conn = mongoose.connection;
+var gfsbucket ;
+conn.once('open' , ()=>{
+  gfsbucket = new mongoose.mongo.GridFSBucket(conn.db ,{
+    bucketName:"uploads"
+  })
+})
+
+// var storage = new GridFsStorage({
+//   url: "mongodb://127.0.0.1:27017/instaclone",
+//   file: (req, file) => {
+//     return new Promise((resolve, reject) => {
+//       crypto.randomBytes(16, (err, buf) => {
+//         if (err) {
+//           return reject(err);
+//         }
+//         const filename = buf.toString("hex") + path.extname(file.originalname);
+//         const fileInfo = {
+//           filename: filename,
+//           bucketName: "uploads",
+//         };
+//         resolve(fileInfo);
+//       });
+//     });
+//   },
+// });
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage:storage });
 
 const localStrategy = require("passport-local");
 passport.use(new localStrategy(userModel.authenticate()));
+
+
+router.post("/uploadpost",isLoggedIn,upload.single("photo"),async function (req, res, next) {
+  console.log(req.file);
+  console.log(req.body);
+  
+  var user = await userModel.findOne({username : req.session.passport.user})
+  
+  const Randomname = crypto.randomBytes(20).toString("hex")
+
+  await Readable.from(req.file.buffer).pipe(gfsbucket.openUploadStream(Randomname));
+
+  await postModel.create({
+    post: Randomname,
+    size: req.file.size,
+    caption : req.body.caption,
+    userid : user._id,
+  })
+  res.send("u");
+
+});
+
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -23,15 +86,15 @@ router.get("/profile", isLoggedIn, function (req, res, next) {
   userModel
     .findOne({ username: req.session.passport.user })
     .then(function (founduser) {
-      console.log(founduser);
       res.render("profile", { founduser });
     });
 });
 router.get("/feed", isLoggedIn, function (req, res, next) {
   res.render("feed");
 });
-router.get("/create", isLoggedIn, function (req, res, next) {
-  res.render("create");
+router.get("/create", isLoggedIn, async function (req, res, next) {
+  var user = await userModel.findOne({username : req.session.passport.user})
+  res.render("create" , {user} );
 });
 
 router.get("/editback", isLoggedIn, function (req, res, next) {

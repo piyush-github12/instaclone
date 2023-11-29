@@ -3,15 +3,19 @@ var mongoose = require("mongoose");
 
 var postSchema = mongoose.Schema({
  userid : {type:mongoose.Schema.Types.ObjectId , ref: 'user'},
- data: String,
- 
+ post: String,
  likes: [
-    {type:mongoose.Schema.Types.ObjectId , ref:'user'}
+   {type:mongoose.Schema.Types.ObjectId , ref:'user'}
+ ],
+ comments:[
+   {type:mongoose.Schema.Types.ObjectId , ref:'comment'}
  ],
  date:{
-    type:Date,
-    default:Date.now(),
- }
+   type:Date,
+   default:Date.now(),
+ },
+ caption:String,
+ size:String, 
 });
 
 

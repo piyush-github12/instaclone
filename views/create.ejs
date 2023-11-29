@@ -1,0 +1,135 @@
+<% include ./partials/header.ejs %>
+
+<style>
+   #right{
+      /* padding: 5vw 5vw; */
+      position: relative;
+   }
+   #createcontainer{
+      width: 75vw;
+      height: 80vh;
+      /* background-color: rebeccapurple; */
+       /* position: absolute;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%,-50%); */
+       border: 2px solid black;
+       border-radius: 10px;
+       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+   }
+   #ccp-part1{
+      height: 100%;
+      width: 60%;
+      border-right: 2px solid black;
+      background-color: palegreen;
+    
+   }
+   #ccp-part1 img , #ccp-part1 video{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+   }
+
+   #preview{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background-color: palevioletred;
+      font-weight: 900;
+   }
+   #ccp-part2{
+      height: 100%;
+      width: 40%;
+      /* background-color: red; */
+      padding: 5vw 3vw;
+
+   }
+   #imagecircle{
+      height: 60px;
+      width: 100%;
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      /* background-color: rebeccapurple; */
+   }
+   #imagecircle img{
+      height: 60px ;
+      width: 60px ;
+      border-radius: 50%;
+      border: 2px solid black;
+   }
+   #captiontext{
+      margin-top: 20px;
+      width: 80%;
+      height: 25vh;
+      padding: 1vw 1vw;
+      border: 2px solid black;
+      resize: none;
+      border-radius: 10px;
+   }
+
+</style>
+
+ <div id="right">
+    <h3 style=" padding: 20px; height: 4vh; width: 75vw; font-weight: 900; display: flex; align-items: center ; justify-content: center; border: 2px solid black; border-radius: 10px;  " >Create New Post </h3>
+  
+   <form id="createcontainer" action="/uploadpost" method="post" enctype="multipart/form-data" >
+      <div id="ccp-part1">
+         <input style="display: none;" type="file" id="fileInput" name="photo" accept="image/*,video/*" >
+         <div id="preview">
+            <h4 id="clicktoselect">Click to select image / video</h4>
+         </div>
+      </div>
+      <div id="ccp-part2">
+         <div id="imagecircle">
+            <img src="<%= user.image %>" alt="">
+            <h3><%= user.username %></h3>
+         </div>
+         <textarea type="text" name="caption" id="captiontext"   placeholder="Write a caption..."></textarea>
+      </div>
+      <input disabled class="btn btn-primary mt-2" type="submit" id="sharebtn" value="Share Post">
+   </form>
+ </div>
+
+ <script>
+   document.querySelector('#preview')
+  .addEventListener("click",function(){
+    document.querySelector('#fileInput').click()
+  })
+
+   const fileInput = document.getElementById('fileInput');
+   const preview = document.getElementById('preview');
+   const sharebtn = document.getElementById('sharebtn');
+
+   fileInput.addEventListener('change', function(event) {
+   const file = event.target.files[0];
+      console.log(file)
+   if (file) {
+      const fileType = file.type.split('/')[0];
+      sharebtn.removeAttribute('disabled' , true)
+
+      if (fileType === 'image') {
+         preview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Preview">`;
+      } else if (fileType === 'video') {
+         preview.innerHTML = `<video controls><source src="${URL.createObjectURL(file)}" type="${file.type}"></video>`;
+      }
+
+      preview.style.display = 'block';
+   } else {
+      preview.innerHTML = ``;
+      preview.style.display = 'none';
+      sharebtn.setAttribute("disabled" , true)
+   }
+   });   
+ </script>
+
+
+<% include ./partials/footer.ejs %>
+
