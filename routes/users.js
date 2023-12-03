@@ -7,10 +7,7 @@ var userSchema = mongoose.Schema({
   username : String,
   password:String,
   email: String,
-  image:{
-    type:String,
-    default:"def.png"
-  },
+  image:String,
   profession: String,
   posts:[
     {type: mongoose.Schema.Types.ObjectId , ref:'post'}

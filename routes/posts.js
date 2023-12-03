@@ -16,6 +16,7 @@ var postSchema = mongoose.Schema({
  },
  caption:String,
  size:String, 
+ filetype:String,
 });
 
 

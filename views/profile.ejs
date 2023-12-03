@@ -1,6 +1,10 @@
 <% include ./partials/header.ejs %>
   <style>
-
+    #right{
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+    }
     #upper{
       width: 100%;
       height: 30vh;
@@ -99,14 +103,33 @@
       position: absolute;
       width: 100%;
       height: 50vh;
-      background-color: palegreen;
+      padding: 20px;
+      /* background-color: palegreen; */
     }
     #profile-saved-posts{
       position: absolute;
       width: 100%;
       height: 50vh;
       background-color: palevioletred;
-      opacity: 0;      
+      opacity: 0;  
+      display: none;    
+    }
+    #instacard{
+        width: 300px;
+        height: 300px;
+        background-color: black;
+        margin: 3px 3px;
+        border: 2px solid black;
+    }
+    #photos{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill , minmax(300px , 1fr));
+    }
+    #instacard img ,#instacard video{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
   </style>
@@ -116,9 +139,13 @@
       <div id="up-first">
         <div id="mainprofile">
           <div id="profileimage">
-            <img src="../images/poiflepicture/<%= founduser.image%>" alt="">
+            <img  src="/profileimage/<%= founduser.image%>" alt="">
           </div>
-          <a href="/uploadprofile"><div id="uploadprofile"><i class="ri-pencil-fill"></i></i></div></a>
+          <div  style="cursor: pointer;" id="uploadprofile"><i class="ri-pencil-fill"></i></div>
+          <form style="display: none;" action="/uploadprofileimage"  method="post" enctype="multipart/form-data">
+            <input id="uploadprofileimageform" name="upimage" type="file" accept="image/*" >
+            <input id="upform" type="submit" >
+          </form>
         </div>
       </div>
       <div id="up-second">
@@ -127,7 +154,7 @@
         <div id="up-second-second" class="mb-3">
           <h4><%= founduser.posts.length%> Posts</h4>
           <h4><%= founduser.followers.length%> follower</h4>
-          <h4><%= founduser.following.length%> following</h4>
+          <h4 ><%= founduser.following.length%> following</h4>
         </div>
         
         <h5 style="color: gray;"><%= founduser.profession%></h5>
@@ -141,13 +168,27 @@
       </div>
 
       <div id="profile-posts">
+        <div id="photos">
+        <% founduser.posts.reverse().forEach(function(post){  %>
+            
+          <div  id="instacard" class="instacard">
+            <h2 style="display: none;" ><%= post.post %></h2>
+           <% if( post.filetype === "video/mp4"){ %>
+            <video src="/profileimage/<%= post.post %>" muted  ></video>
+           <% }else if(post.filetype === "image/jpg" || post.filetype === "image/png" ||post.filetype === "image/jpeg" ){ %>
+            <img src="/profileimage/<%= post.post %>" alt="">
+           <%} %>
+          </div>
+
+        <% })  %> 
+        </div>
 
       </div>
       <div id="profile-saved-posts">
 
       </div>
-
     </div>
+
 
   </div>
     
@@ -188,7 +229,21 @@
     })  
    
   })
+
+  document.querySelector("#uploadprofile").addEventListener("click", function(){
+    document.querySelector("#uploadprofileimageform").click()
+  })
+  document.querySelector("#uploadprofileimageform").addEventListener('change', function(){
+    document.querySelector("#upform").click()
+  })
   
+
+  document.querySelectorAll(".instacard").forEach((openpost)=>{
+    openpost.addEventListener('click',function(e){
+       var postname =  openpost.querySelector('h2').innerText;
+       axios.get(`/openpost/${postname}`)
+    })
+  })
 </script>
 
 <% include ./partials/footer.ejs %>

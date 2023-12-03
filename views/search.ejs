@@ -21,7 +21,7 @@
             results.data.users.forEach(user => {
                 clutter += `<div id="searchresult">
                     <a  href="/usersprofile/${user.username}"> 
-                        <img style="border-radius: 50%; width: 5vw; height: 5vw; border: 2px solid black;" src="${user.image}" alt="">
+                        <img style="border-radius: 50%; width: 5vw; height: 5vw; border: 2px solid black; object-fit: cover; " src="/profileimage/${user.image}" alt="">
                         <div id="searchresultright">
                             <h4>${user.username} </h4>
                             <h6> • ${user.followers.length}  Followers</h6>

@@ -69,8 +69,13 @@ router.post("/uploadpost",isLoggedIn,upload.single("photo"),async function (req,
     size: req.file.size,
     caption : req.body.caption,
     userid : user._id,
+    filetype: req.file.mimetype,
   })
-  res.send("u");
+  const post = await postModel.findOne({post: Randomname})
+  user.posts.push(post._id)
+  user.save()
+
+  res.redirect("/profile");
 
 });
 
@@ -82,19 +87,47 @@ router.get("/", function (req, res, next) {
 router.get("/login", function (req, res, next) {
   res.render("login");
 });
+
+router.get("/profileimage/:imagename" , (req,res,next) =>{
+
+
+  gfsbucket.openDownloadStreamByName(req.params.imagename).pipe(res)
+
+
+      // const videoStream = gfsbucket.openDownloadStreamByName(
+      //   req.params.imagename
+      // );
+
+      // videoStream.on("error", (err) => {
+      //   console.error("Error streaming video file:", err);
+      //   res.status(404).send("Video not found");
+      // });
+
+      // videoStream.pipe(res);
+
+
+
+})
 router.get("/profile", isLoggedIn, function (req, res, next) {
   userModel
     .findOne({ username: req.session.passport.user })
+    .populate("posts")
     .then(function (founduser) {
       res.render("profile", { founduser });
+      console.log(founduser)
     });
 });
+
+router.get('/openpost/:postname',isLoggedIn, function(req,res,next){
+  res.render("openpost")
+})
+
 router.get("/feed", isLoggedIn, function (req, res, next) {
   res.render("feed");
 });
 router.get("/create", isLoggedIn, async function (req, res, next) {
-  var user = await userModel.findOne({username : req.session.passport.user})
-  res.render("create" , {user} );
+  var founduser = await userModel.findOne({username : req.session.passport.user})
+  res.render("create" , {founduser} );
 });
 
 router.get("/editback", isLoggedIn, function (req, res, next) {
@@ -137,6 +170,30 @@ router.post("/updateprofile", isLoggedIn, function (req, res, next) {
 
   })
 });
+router.post("/uploadprofileimage",isLoggedIn,upload.single("upimage") , async function (req, res, next) {
+
+  const nn = crypto.randomBytes(20).toString("hex")
+
+  await Readable.from(req.file.buffer).pipe(gfsbucket.openUploadStream(nn));
+
+  userModel
+    .findOneAndUpdate(
+      { username: req.session.passport.user },
+      { $set: { image: nn } },
+      { new: true }
+    )
+    .then(function (updatedsuer) {
+      req.login(updatedsuer, function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect("/profile");
+      });
+    });
+
+});
+
+
 
 
 
